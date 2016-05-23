@@ -102,4 +102,6 @@ typedef enum {
 
 
 - (void) changeCircleText:(NSString *) text;
+
+-(void) hideCircle;
 @end

@@ -72,11 +72,13 @@
 
 - (void) changeCircleText:(NSString *) text{
     [self.circleLabel setText:text];
-    
-    NSLog(@"%f   %f",_circleLabelWidthConstraint.constant, self.circleLabel.constraints[1].constant);
     self.circleLabel.layer.cornerRadius = _circleLabelWidthConstraint.constant/2;
     [self.circleLabel setClipsToBounds:TRUE];
     
+}
+
+-(void) hideCircle{
+    [self.circleLabel setHidden:true];
 }
 
 
@@ -118,7 +120,7 @@
     
     
     [circleLabelContainer addSubview:self.circleLabel];
-    
+    [circleLabelContainer setBackgroundColor:[UIColor clearColor]];
     
     [circleLabelContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[label]|" options:0 metrics:nil views:@{@"label":self.circleLabel}]];  // horizontal constraint
     [circleLabelContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[label]|" options:0 metrics:nil views:@{@"label":self.circleLabel}]];
