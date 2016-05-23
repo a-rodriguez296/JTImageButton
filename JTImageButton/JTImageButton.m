@@ -69,6 +69,45 @@
     }
 }
 
+- (void) changeCircleText:(NSString *) text{
+    [self.circleLabel setText:text];
+    NSLog(@"%f",self.circleLabel.frame.size.height);
+}
+
+- (void)createTitle:(NSString *)titleText withIcon:(UIImage *)iconImage font:(UIFont *)titleFont iconHeight:(CGFloat)iconHeight iconOffsetY:(CGFloat)iconOffsetY circleTitle:(NSString *)circleTitle circleColor:(UIColor *)circleColor  {
+    [self createTitle:titleText withIcon:iconImage font:titleFont iconHeight:iconHeight iconOffsetY:iconOffsetY];
+    
+    
+    UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [v setTranslatesAutoresizingMaskIntoConstraints:NO];
+    self.circleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    [self.circleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.circleLabel setText:@"10"];
+    [self.circleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.circleLabel setBackgroundColor:[UIColor greenColor]];
+    [v addSubview:self.circleLabel];
+    
+    
+    [v addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[label]|" options:0 metrics:nil views:@{@"label":self.circleLabel}]];  // horizontal constraint
+    [v addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[label]|" options:0 metrics:nil views:@{@"label":self.circleLabel}]];
+    
+    [v updateConstraintsIfNeeded];
+    NSLog(@"%f",v.frame.size.height);
+    [self.circleLabel.layer setCornerRadius:9.5];
+    self.circleLabel.clipsToBounds = YES;
+    
+    
+    
+    [self addSubview:v];
+    
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:v attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[label]-16-[circleView]" options:0 metrics:nil views:@{@"circleView":v, @"label": self.titleLabel}]];
+    
+}
+
+
 - (void)createTitle:(NSString *)titleText withIcon:(UIImage *)iconImage font:(UIFont *)titleFont iconHeight:(CGFloat)iconHeight iconOffsetY:(CGFloat)iconOffsetY {
     
     self.titleText = titleText;

@@ -30,6 +30,9 @@ typedef enum {
  */
 @property (nonatomic, strong) UIColor *titleColor;
 
+
+@property (nonatomic, strong) UILabel *circleLabel;
+
 /**
  Icon should be overlayed with color. The default iconColor is nil. Final image quality could be different.
  */
@@ -94,4 +97,9 @@ typedef enum {
  */
 - (void)createTitle:(NSString *)titleText withIcon:(UIImage *)iconImage font:(UIFont *)titleFont iconOffsetY:(CGFloat)iconOffsetY;
 
+
+- (void)createTitle:(NSString *)titleText withIcon:(UIImage *)iconImage font:(UIFont *)titleFont iconHeight:(CGFloat)iconHeight iconOffsetY:(CGFloat)iconOffsetY circleTitle:(NSString *)circleTitle circleColor:(UIColor *)circleColor;
+
+
+- (void) changeCircleText:(NSString *) text;
 @end
