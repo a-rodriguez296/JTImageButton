@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UIFont *titleFont;
 @property (nonatomic, assign) CGFloat iconHeight;
 @property (nonatomic, assign) CGFloat iconOffsetY;
+@property (nonatomic, assign) NSLayoutConstraint *circleLabelWidthConstraint;
 
 @end
 
@@ -71,33 +72,63 @@
 
 - (void) changeCircleText:(NSString *) text{
     [self.circleLabel setText:text];
+    
+    NSLog(@"%f   %f",_circleLabelWidthConstraint.constant, self.circleLabel.constraints[1].constant);
+    self.circleLabel.layer.cornerRadius = _circleLabelWidthConstraint.constant/2;
+    [self.circleLabel setClipsToBounds:TRUE];
+    
 }
 
-- (void)createTitle:(NSString *)titleText withIcon:(UIImage *)iconImage font:(UIFont *)titleFont iconHeight:(CGFloat)iconHeight iconOffsetY:(CGFloat)iconOffsetY circleTitle:(NSString *)circleTitle circleTitleFont:(UIFont *)circleTitleFont  circleColor:(UIColor *)circleColor  {
+
+- (void)createTitle:(NSString *)titleText withIcon:(UIImage *)iconImage font:(UIFont *)titleFont iconHeight:(CGFloat)iconHeight iconOffsetY:(CGFloat)iconOffsetY circleTitleFont:(UIFont *)circleTitleFont  circleColor:(UIColor *)circleColor{
     [self createTitle:titleText withIcon:iconImage font:titleFont iconHeight:iconHeight iconOffsetY:iconOffsetY];
     
     
-    UIView *v = [[UIView alloc] initWithFrame:CGRectZero];
+    UIView *circleLabelContainer = [[UIView alloc] initWithFrame:CGRectZero];
     
-    [v setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [circleLabelContainer setTranslatesAutoresizingMaskIntoConstraints:NO];
     self.circleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     [self.circleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.circleLabel setText:circleTitle];
+    [self.circleLabel setText:@""];
     [self.circleLabel setFont:circleTitleFont];
     [self.circleLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.circleLabel setTextColor:[UIColor whiteColor]];
     [self.circleLabel setBackgroundColor:circleColor];
-    [v addSubview:self.circleLabel];
+    
+    _circleLabelWidthConstraint = [NSLayoutConstraint constraintWithItem:self.circleLabel
+                                                                        attribute:NSLayoutAttributeWidth
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:nil
+                                                                        attribute:NSLayoutAttributeNotAnAttribute
+                                                                       multiplier:1.0
+                                                                         constant:20.0];
+   
+//    [_circleLabelWidthConstraint setPriority:UILayoutPriorityDefaultLow];
+    
+    [self.circleLabel addConstraint:_circleLabelWidthConstraint];
+     _circleLabelWidthConstraint.priority = 100;
+    
+    [self.circleLabel addConstraint:[NSLayoutConstraint constraintWithItem:self.circleLabel
+                                                                     attribute:NSLayoutAttributeWidth
+                                                                     relatedBy:NSLayoutRelationEqual
+                                                                        toItem:self.circleLabel
+                                                                     attribute:NSLayoutAttributeHeight
+                                                                    multiplier:1.0
+                                                                      constant:0]];
     
     
-    [v addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[label]|" options:0 metrics:nil views:@{@"label":self.circleLabel}]];  // horizontal constraint
-    [v addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[label]|" options:0 metrics:nil views:@{@"label":self.circleLabel}]];
-    
-    [v updateConstraintsIfNeeded];
-    [self addSubview:v];
+    [circleLabelContainer addSubview:self.circleLabel];
     
     
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:v attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.imageView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[label]-16-[circleView]" options:0 metrics:nil views:@{@"circleView":v, @"label": self.titleLabel}]];
+    [circleLabelContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[label]|" options:0 metrics:nil views:@{@"label":self.circleLabel}]];  // horizontal constraint
+    [circleLabelContainer addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[label]|" options:0 metrics:nil views:@{@"label":self.circleLabel}]];
+    
+    [circleLabelContainer updateConstraintsIfNeeded];
+    [self addSubview:circleLabelContainer];
+    
+    
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:circleLabelContainer attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.titleLabel attribute:NSLayoutAttributeCenterYWithinMargins multiplier:1.0 constant:0]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[label]-10-[circleView]" options:0 metrics:nil views:@{@"circleView":circleLabelContainer, @"label": self.titleLabel}]];
     
 }
 

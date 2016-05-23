@@ -98,7 +98,7 @@ typedef enum {
 - (void)createTitle:(NSString *)titleText withIcon:(UIImage *)iconImage font:(UIFont *)titleFont iconOffsetY:(CGFloat)iconOffsetY;
 
 
-- (void)createTitle:(NSString *)titleText withIcon:(UIImage *)iconImage font:(UIFont *)titleFont iconHeight:(CGFloat)iconHeight iconOffsetY:(CGFloat)iconOffsetY circleTitle:(NSString *)circleTitle circleTitleFont:(UIFont *)circleTitleFont  circleColor:(UIColor *)circleColor;
+- (void)createTitle:(NSString *)titleText withIcon:(UIImage *)iconImage font:(UIFont *)titleFont iconHeight:(CGFloat)iconHeight iconOffsetY:(CGFloat)iconOffsetY circleTitleFont:(UIFont *)circleTitleFont  circleColor:(UIColor *)circleColor;
 
 
 - (void) changeCircleText:(NSString *) text;
